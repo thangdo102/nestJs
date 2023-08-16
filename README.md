@@ -10,7 +10,7 @@ $ npm install
 
 ## Running the app
 
-$ docker compose up dev-db -d
+$ npm run db:dev:restart
 
 ```bash
 # development
