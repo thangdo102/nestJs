@@ -20,5 +20,18 @@ services:
   #     POSTGRES_DB: nest
   #   networks:
   #     - freecodecamp
+
+  backend:
+    build: ./
+    container_name: nestjs_api
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: nest
+    ports:
+      - 5435:5432
+    depends_on:
+      - database
+
 networks:
   freecodecamp:
