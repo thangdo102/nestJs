@@ -1,7 +1,10 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { GetUser } from '../auth/decorator/get-user.decorator';
 // import { AuthGuard } from '@nestjs/passport';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../auth/guard/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
   //UseGuards : sẽ tự động kiểm tra xem token có trong request header hay không,
@@ -20,9 +23,8 @@ export class UserController {
   // }
 
   //Cách 2, sử dụng custome AuthGuard vì req sẽ có lỗi
-  @UseGuards(JwtGuard)
   @Get('me')
-  getMe(@Req() req: any) {
-    return req.user;
+  getMe(@GetUser() user: User) {
+    return user;
   }
 }

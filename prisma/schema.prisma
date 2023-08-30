@@ -20,23 +20,42 @@ model User {
 
   firstName String?
   lastName  String?
-  bookmarks Bookmark[]
+  Recipe    Recipe[]
 
   @@map("users") //đổi tên bảng trong database
 }
 
-model Bookmark {
+model Recipe {
   id        Int      @id @default(autoincrement())
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
+  name      String
 
-  title       String
-  description String?
-  link        String
+  userId               Int
+  User                 User                   @relation(fields: [userId], references: [id])
+  IngredientsOnRecipes IngredientsOnRecipes[]
 
-  //một user sẽ có nhiều bookmarks, một bookmark thì chỉ thuộc về 1 user
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  @@map("recipes")
+}
 
-  @@map("bookmarks")
+model Ingredient {
+  id                   Int                    @id @default(autoincrement())
+  createAt             DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  name                 String
+  IngredientsOnRecipes IngredientsOnRecipes[]
+
+  @@map("ingredients")
+}
+
+model IngredientsOnRecipes {
+  id Int @id @default(autoincrement())
+
+  recipeId Int
+  Recipe   Recipe @relation(fields: [recipeId], references: [id])
+
+  ingredientId Int
+  Ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@map("ingredientsOnRecipes")
 }

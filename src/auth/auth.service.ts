@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -26,7 +26,10 @@ export class AuthService {
         },
       });
 
-      return this.signToken(user.id, user.email);
+      const token = await this.signToken(user.id, user.email);
+      return {
+        access_token: token,
+      };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -54,14 +57,13 @@ export class AuthService {
     //if password incorrect throw exception
     if (!pwMatches) throw new ForbiddenException('Cridentials incorrect!');
 
+    const token = await this.signToken(user.id, user.email);
+
     //send back user
-    return this.signToken(user.id, user.email);
+    return { access_token: token, account: dto };
   }
 
-  async signToken(
-    userId: number,
-    email: string,
-  ): Promise<{ access_token: string }> {
+  async signToken(userId: number, email: string): Promise<string> {
     const payload = {
       sub: userId,
       email,
@@ -74,8 +76,6 @@ export class AuthService {
       secret: secret,
     });
 
-    return {
-      access_token: token,
-    };
+    return token;
   }
 }
