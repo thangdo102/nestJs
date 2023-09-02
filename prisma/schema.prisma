@@ -26,36 +26,27 @@ model User {
 }
 
 model Recipe {
-  id        Int      @id @default(autoincrement())
-  createAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
+  id          Int      @id @default(autoincrement())
+  createAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  recipe      String
+  slug        String
+  image       String
+  ingredients String
 
-  userId               Int
-  User                 User                   @relation(fields: [userId], references: [id])
-  IngredientsOnRecipes IngredientsOnRecipes[]
+  userId Int
+  User   User @relation(fields: [userId], references: [id])
 
   @@map("recipes")
 }
 
-model Ingredient {
-  id                   Int                    @id @default(autoincrement())
-  createAt             DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  name                 String
-  IngredientsOnRecipes IngredientsOnRecipes[]
+// model Ingredient {
+//   id        Int      @id @default(autoincrement())
+//   createAt  DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name      String
+//   Recipe    Recipe?  @relation(fields: [recipeId], references: [id])
+//   recipeId  Int?
 
-  @@map("ingredients")
-}
-
-model IngredientsOnRecipes {
-  id Int @id @default(autoincrement())
-
-  recipeId Int
-  Recipe   Recipe @relation(fields: [recipeId], references: [id])
-
-  ingredientId Int
-  Ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-
-  @@map("ingredientsOnRecipes")
-}
+//   @@map("ingredients")
+// }

@@ -1,0 +1,270 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "operationId": "AuthController_signup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "operationId": "AuthController_signin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "UserController_getMe",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/recipe": {
+      "post": {
+        "operationId": "RecipeController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRecipeDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } }
+      },
+      "get": {
+        "operationId": "RecipeController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/recipe/{id}": {
+      "get": {
+        "operationId": "RecipeController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      },
+      "patch": {
+        "operationId": "RecipeController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateRecipeDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } }
+      },
+      "delete": {
+        "operationId": "RecipeController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/ingredient": {
+      "post": {
+        "operationId": "IngredientController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateIngredientDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } }
+      },
+      "get": {
+        "operationId": "IngredientController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/ingredient/{id}": {
+      "get": {
+        "operationId": "IngredientController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      },
+      "patch": {
+        "operationId": "IngredientController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateIngredientDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } }
+      },
+      "delete": {
+        "operationId": "IngredientController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/ingredients-on-recipes": {
+      "post": {
+        "operationId": "IngredientsOnRecipesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIngredientsOnRecipeDto"
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } }
+      },
+      "get": {
+        "operationId": "IngredientsOnRecipesController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/ingredients-on-recipes/{id}": {
+      "get": {
+        "operationId": "IngredientsOnRecipesController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      },
+      "patch": {
+        "operationId": "IngredientsOnRecipesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIngredientsOnRecipeDto"
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } }
+      },
+      "delete": {
+        "operationId": "IngredientsOnRecipesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      }
+    }
+  },
+  "info": {
+    "title": "nestJs",
+    "description": "The nestJs API",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    { "url": "", "description": "dev" },
+    { "url": "http://localhost:3001", "description": "local" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" }
+    },
+    "schemas": {
+      "AuthDto": { "type": "object", "properties": {} },
+      "CreateRecipeDto": { "type": "object", "properties": {} },
+      "UpdateRecipeDto": { "type": "object", "properties": {} },
+      "CreateIngredientDto": { "type": "object", "properties": {} },
+      "UpdateIngredientDto": { "type": "object", "properties": {} },
+      "CreateIngredientsOnRecipeDto": { "type": "object", "properties": {} },
+      "UpdateIngredientsOnRecipeDto": { "type": "object", "properties": {} }
+    }
+  },
+  "security": [{ "bearer": [] }]
+}

@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RecipeService {
-  create(createRecipeDto: CreateRecipeDto) {
-    return 'This action adds a new recipe';
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create(user: any, createRecipeDto: CreateRecipeDto) {
+    const res = await this.prismaService.recipe.create({
+      data: {
+        ...createRecipeDto,
+        userId: user.id,
+      },
+    });
+    return res;
   }
 
-  findAll() {
-    return `This action returns all recipe`;
+  async findAll() {
+    return await this.prismaService.recipe.findMany({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recipe`;
-  }
-
-  update(id: number, updateRecipeDto: UpdateRecipeDto) {
-    return `This action updates a #${id} recipe`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} recipe`;
+  async findOne(slug: string) {
+    return await this.prismaService.recipe.findFirst({
+      where: {
+        slug: slug,
+      },
+    });
   }
 }

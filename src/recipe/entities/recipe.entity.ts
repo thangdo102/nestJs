@@ -1,4 +1,3 @@
-import { IngredientsOnRecipe } from 'src/ingredients-on-recipes/entities/ingredients-on-recipe.entity';
 import { User } from 'src/user/entities/user.entity';
 
 export class Recipe {
@@ -6,7 +5,7 @@ export class Recipe {
   name: string;
   userId: number;
   user: User;
-  ingredientsOnRecipes: IngredientsOnRecipe[];
+  ingredients: string;
   createAt: string;
   updatedAt: string;
 }

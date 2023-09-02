@@ -15,6 +15,8 @@ export class AuthService {
   ) {}
 
   async signup(dto: AuthDto) {
+    console.log(dto);
+
     //generate the password hash
     const hash = await argon.hash(dto.password);
     try {
@@ -25,7 +27,6 @@ export class AuthService {
           hash,
         },
       });
-
       const token = await this.signToken(user.id, user.email);
       return {
         access_token: token,
