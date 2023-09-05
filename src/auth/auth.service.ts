@@ -15,8 +15,6 @@ export class AuthService {
   ) {}
 
   async signup(dto: AuthDto) {
-    console.log(dto);
-
     //generate the password hash
     const hash = await argon.hash(dto.password);
     try {
@@ -25,6 +23,7 @@ export class AuthService {
         data: {
           email: dto.email,
           hash,
+          role: 'USER',
         },
       });
       const token = await this.signToken(user.id, user.email);
@@ -61,7 +60,7 @@ export class AuthService {
     const token = await this.signToken(user.id, user.email);
 
     //send back user
-    return { access_token: token, account: dto };
+    return { access_token: token, account: { ...dto, role: user.role } };
   }
 
   async signToken(userId: number, email: string): Promise<string> {
@@ -73,7 +72,7 @@ export class AuthService {
     const secret = this.configService.get('JWT_SECRET');
 
     const token = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
+      expiresIn: '24h',
       secret: secret,
     });
 

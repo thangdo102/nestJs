@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Delete,
+} from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { GetUser } from 'src/auth/decorator';
 import { User } from 'src/user/entities/user.entity';
 import { JwtGuard } from 'src/auth/guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('recipe')
 @UseGuards(JwtGuard)
 @Controller('recipe')
 export class RecipeController {
@@ -23,5 +33,10 @@ export class RecipeController {
   @Get(':slug')
   findOne(@Param('slug') slug: string) {
     return this.recipeService.findOne(slug);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.recipeService.delete(id);
   }
 }

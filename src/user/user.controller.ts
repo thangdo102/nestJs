@@ -1,12 +1,17 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator/get-user.decorator';
 // import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../auth/guard/jwt.guard';
+import { ApiTags } from '@nestjs/swagger';
+import { UserService } from './user.service';
 
+@ApiTags('users')
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
+  constructor(private readonly userService: UserService) {}
+
   //UseGuards : sẽ tự động kiểm tra xem token có trong request header hay không,
   //và check xem token này có thông tin gì.
   //cách hoạt động:
@@ -26,5 +31,15 @@ export class UserController {
   @Get('me')
   getMe(@GetUser() user: User) {
     return user;
+  }
+
+  @Get('allUser')
+  getAllUser() {
+    return this.userService.getAllUser();
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.userService.delete(id);
   }
 }

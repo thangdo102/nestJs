@@ -27,4 +27,12 @@ export class RecipeService {
       },
     });
   }
+
+  async delete(id: string) {
+    return await this.prismaService.recipe.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
 }
