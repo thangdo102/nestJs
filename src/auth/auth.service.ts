@@ -5,6 +5,7 @@ import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
           role: 'USER',
         },
       });
-      const token = await this.signToken(user.id, user.email);
+      const token = await this.signToken(user.id, user.email, user.role);
       return {
         access_token: token,
       };
@@ -57,16 +58,17 @@ export class AuthService {
     //if password incorrect throw exception
     if (!pwMatches) throw new ForbiddenException('Cridentials incorrect!');
 
-    const token = await this.signToken(user.id, user.email);
+    const token = await this.signToken(user.id, user.email, user.role);
 
     //send back user
     return { access_token: token, account: { ...dto, role: user.role } };
   }
 
-  async signToken(userId: number, email: string): Promise<string> {
+  async signToken(userId: number, email: string, role: Role): Promise<string> {
     const payload = {
       sub: userId,
       email,
+      role: role,
     };
 
     const secret = this.configService.get('JWT_SECRET');
