@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { loggerMiddleware } from './common/middleware/logger.middleware';
 import * as compression from 'compression';
+import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,9 @@ async function bootstrap() {
     loggerMiddleware,
     compression(),
   );
+
+  //sử dụng interceptor ở toàn cục, áp dụng cho mọi route
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   // swagger
   if (configService.get<boolean>('ENABLE_SWAGGER')) {
