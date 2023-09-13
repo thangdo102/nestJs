@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
@@ -13,6 +14,7 @@ import { GetUser } from 'src/common/decorator';
 import { User } from 'src/user/entities/user.entity';
 import { JwtGuard } from 'src/common/guard';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/common/decorator/public-guard.decorator';
 
 @ApiTags('recipe')
 @UseGuards(JwtGuard)
@@ -25,8 +27,12 @@ export class RecipeController {
     return this.recipeService.create(user, createRecipeDto);
   }
 
+  @Public()
   @Get()
-  findAll() {
+  findAll(
+    @GetUser(new ValidationPipe({ validateCustomDecorators: true })) user: any,
+  ) {
+    console.log(user);
     return this.recipeService.findAll();
   }
 
