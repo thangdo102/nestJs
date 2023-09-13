@@ -1,11 +1,19 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { Role, User } from '@prisma/client';
-import { GetUser } from '../auth/decorator/get-user.decorator';
+import { GetUser } from '../common/decorator/get-user.decorator';
 // import { AuthGuard } from '@nestjs/passport';
-import { JwtGuard } from '../auth/guard/jwt.guard';
+import { JwtGuard } from '../common/guard/jwt.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Roles } from 'src/common/decorator/roles.decorator';
 
 @ApiTags('users')
 @UseGuards(JwtGuard)
@@ -40,8 +48,15 @@ export class UserController {
     return this.userService.getAllUser();
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
     return this.userService.delete(id);
   }
 }

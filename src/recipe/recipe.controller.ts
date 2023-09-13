@@ -9,12 +9,10 @@ import {
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from 'src/common/decorator';
 import { User } from 'src/user/entities/user.entity';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from 'src/common/guard';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
-import { Roles } from 'src/auth/decorator/roles.decorator';
 
 @ApiTags('recipe')
 @UseGuards(JwtGuard)
@@ -27,7 +25,6 @@ export class RecipeController {
     return this.recipeService.create(user, createRecipeDto);
   }
 
-  @Roles(Role.ADMIN)
   @Get()
   findAll() {
     return this.recipeService.findAll();

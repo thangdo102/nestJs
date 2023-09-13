@@ -8,15 +8,11 @@ import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
 
 import { ROLES_KEY } from '../decorator/roles.decorator';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   private logger = new Logger(RolesGuard.name);
-  constructor(
-    private reflector: Reflector,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
@@ -29,17 +25,8 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    // const {user} = context.switchToHttp().getRequest();
+    const { user } = context.switchToHttp().getRequest();
 
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
-    const payload: any = this.jwtService.decode(token);
-
-    return requiredRoles.some((role) => payload.role === role);
-  }
-
-  private extractTokenFromHeader(request: Request | any): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    return requiredRoles.some((role) => user.role === role);
   }
 }

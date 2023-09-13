@@ -9,10 +9,10 @@ export class UserService {
     return await this.prismaService.user.findMany({});
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     return await this.prismaService.user.delete({
       where: {
-        id: Number(id),
+        id: id,
       },
     });
   }

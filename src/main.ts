@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-// import { ConfigService } from '@nestjs/config';
+import { loggerMiddleware } from './common/middleware/logger.middleware';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,13 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT');
+
+  // securitty
+  app.use(
+    // helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }),
+    loggerMiddleware,
+    compression(),
+  );
 
   // swagger
   if (configService.get<boolean>('ENABLE_SWAGGER')) {
@@ -34,6 +42,7 @@ async function bootstrap() {
       //(ví dụ dto có 2 trường là email vs password, mà người dùng cố tình gửi lên thêm id => tự động xoá id)
     }),
   );
+
   await app.listen(port);
 }
 bootstrap();
